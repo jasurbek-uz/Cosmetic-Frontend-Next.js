@@ -10,17 +10,13 @@ import { alpha, styled } from "@mui/material/styles";
 import Menu, { MenuProps } from "@mui/material/Menu";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { CaretDown } from "phosphor-react";
-import useDeviceDetect from "../hooks/useDeviceDetect";
 import Link from "next/link";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import { useReactiveVar } from "@apollo/client";
-import { userVar } from "../../apollo/store";
 import { Logout } from "@mui/icons-material";
-import { REACT_APP_API_URL } from "../config";
+import { REACT_APP_API_URL } from "../types/config";
 
 const Top = () => {
-	const device = useDeviceDetect();
-	const user = useReactiveVar(userVar);
 	const { t, i18n } = useTranslation("common");
 	const router = useRouter();
 	const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
@@ -147,7 +143,6 @@ const Top = () => {
 		window.addEventListener("scroll", changeNavbarColor);
 	}
 
-	if (device == "mobile") {
 		return (
 			<Stack className={"top"}>
 				<Link href={"/"}>
@@ -167,155 +162,8 @@ const Top = () => {
 				</Link>
 			</Stack>
 		);
-	} else {
-		return (
-			<Stack className={"navbar"}>
-				<Stack
-					className={`navbar-main ${colorChange ? "transparent" : ""} ${
-						bgColor ? "transparent" : ""
-					}`}
-				>
-					<Stack className={"container"}>
-						<Box component={"div"} className={"logo-box"}>
-							<Link href={"/"}>
-								<img src="/img/logo/logoWhite.svg" alt="" />
-							</Link>
-						</Box>
-						<Box component={"div"} className={"router-box"}>
-							<Link href={"/"}>
-								<div>{t("Home")}</div>
-							</Link>
-							<Link href={"/property"}>
-								<div>{t("Properties")}</div>
-							</Link>
-							<Link href={"/agent"}>
-								<div> {t("Agents")} </div>
-							</Link>
-							<Link href={"/community?articleCategory=FREE"}>
-								<div> {t("Community")} </div>
-							</Link>
-							{user?._id && (
-								<Link href={"/mypage"}>
-									<div> {t("My Page")} </div>
-								</Link>
-							)}
-							<Link href={"/cs"}>
-								<div> {t("CS")} </div>
-							</Link>
-						</Box>
-						<Box component={"div"} className={"user-box"}>
-							{user?._id ? (
-								<>
-									<div
-										className={"login-user"}
-										onClick={(event: any) =>
-											setLogoutAnchor(event.currentTarget)
-										}
-									>
-										<img
-											src={
-												user?.memberImage
-													? `${REACT_APP_API_URL}/${user?.memberImage}`
-													: "/img/profile/defaultUser.svg"
-											}
-											alt=""
-										/>
-									</div>
 
-									<Menu
-										id="basic-menu"
-										anchorEl={logoutAnchor}
-										open={logoutOpen}
-										onClose={() => {
-											setLogoutAnchor(null);
-										}}
-										sx={{ mt: "5px" }}
-									>
-										<MenuItem onClick={() => logOut()}>
-											<Logout
-												fontSize="small"
-												style={{ color: "blue", marginRight: "10px" }}
-											/>
-											Logout
-										</MenuItem>
-									</Menu>
-								</>
-							) : (
-								<Link href={"/account/join"}>
-									<div className={"join-box"}>
-										<AccountCircleOutlinedIcon />
-										<span>
-											{t("Login")} / {t("Register")}
-										</span>
-									</div>
-								</Link>
-							)}
-
-							<div className={"lan-box"}>
-								{user?._id && (
-									<NotificationsOutlinedIcon className={"notification-icon"} />
-								)}
-								<Button
-									disableRipple
-									className="btn-lang"
-									onClick={langClick}
-									endIcon={
-										<CaretDown size={14} color="#616161" weight="fill" />
-									}
-								>
-									<Box component={"div"} className={"flag"}>
-										{lang !== null ? (
-											<img src={`/img/flag/lang${lang}.png`} alt={"usaFlag"} />
-										) : (
-											<img src={`/img/flag/langen.png`} alt={"usaFlag"} />
-										)}
-									</Box>
-								</Button>
-
-								<StyledMenu
-									anchorEl={anchorEl2}
-									open={drop}
-									onClose={langClose}
-									sx={{ position: "absolute" }}
-								>
-									<MenuItem disableRipple onClick={langChoice} id="en">
-										<img
-											className="img-flag"
-											src={"/img/flag/langen.png"}
-											onClick={langChoice}
-											id="en"
-											alt={"usaFlag"}
-										/>
-										{t("English")}
-									</MenuItem>
-									<MenuItem disableRipple onClick={langChoice} id="kr">
-										<img
-											className="img-flag"
-											src={"/img/flag/langkr.png"}
-											onClick={langChoice}
-											id="uz"
-											alt={"koreanFlag"}
-										/>
-										{t("Korean")}
-									</MenuItem>
-									<MenuItem disableRipple onClick={langChoice} id="ru">
-										<img
-											className="img-flag"
-											src={"/img/flag/langru.png"}
-											onClick={langChoice}
-											id="ru"
-											alt={"russiaFlag"}
-										/>
-										{t("Russian")}
-									</MenuItem>
-								</StyledMenu>
-							</div>
-						</Box>
-					</Stack>
-				</Stack>
-			</Stack>
-		);
-	}
+		
 };
 
 export default withRouter(Top);

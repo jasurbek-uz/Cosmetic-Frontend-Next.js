@@ -1,9 +1,0 @@
-import { NextPage } from "next"
-
-const BrandCosmetic: (props) {
-  return (
-    <>
-    </>
-  )
-}
-export default BrandCosmetic
