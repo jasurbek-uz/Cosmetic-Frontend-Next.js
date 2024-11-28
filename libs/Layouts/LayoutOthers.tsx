@@ -88,30 +88,6 @@ const LayoutOthers = (Component: any) => {
 		}, []);
 
 		/** HANDLERS **/
-
-		if (device == "mobile") {
-			return (
-				<>
-					<Head>
-						<title>Nestar</title>
-						<meta name={"title"} content={`Nestar`} />
-					</Head>
-					<Stack id="mobile-wrap">
-						<Stack id={"top"}>
-							<Top />
-						</Stack>
-
-						<Stack id={"main"}>
-							<Component {...props} />
-						</Stack>
-
-						<Stack id={"footer"}>
-							<Footer />
-						</Stack>
-					</Stack>
-				</>
-			);
-		} else {
 			return (
 				<>
 					<Head>
@@ -151,7 +127,7 @@ const LayoutOthers = (Component: any) => {
 			);
 		}
 	};
-};
+
 
 
 export default LayoutOthers;
